@@ -1,0 +1,45 @@
+import speech_recognition as sr
+from googletrans import Translator
+from gtts import gTTS
+import os
+import time  # To create unique file names
+
+recognizer = sr.Recognizer()
+with sr.Microphone() as source:                              #Holds the microphone input object in source
+    recognizer.adjust_for_ambient_noise(source, duration=1)  #Remove background noices from source
+    t = int(input("Time limit:"))
+    print(f"Complete your message under {t} seconds..")
+    try:
+        audio = recognizer.listen(source, timeout=t)         #stores the audio from source in the "audio" variable
+        print("Processing your speech...")
+
+        # Convert speech to text (Assumes Telugu input)
+        result = recognizer.recognize_google(audio, language="te")   #Converts the data present in the "audio" variable into text 
+        print(f"Recognized text: {result}")
+
+    except (sr.UnknownValueError, sr.RequestError, Exception) as ex:
+        print("Sorry, an error occurred:", ex)
+        print("Try again!")
+        result = None
+
+
+if result:
+    def trans():
+        lang_code = input("Enter language code (e.g., 'te' for Telugu, 'ml' for Malayalam): ")
+        translator = Translator()
+        try:
+            translated_text = translator.translate(result, dest=lang_code).text     #Recognized text is translated and stored into translated text
+            print(f"Translated text: {translated_text}")
+
+            filename = f"translated_speech_{int(time.time())}.mp3"    # Generate a unique filename
+            
+            tts = gTTS(text=translated_text, lang=lang_code, slow=False)   # Convert translated text to speech
+            tts.save(filename)
+            os.system(f"start {filename}")  # Plays the audio file
+        except Exception as e:
+            print(f"Translation error: {e}")
+    trans()                                                  
+
+
+
+                                                    {"RUN THIS CODE IN YOUR PYTHON PLATFORMS"}

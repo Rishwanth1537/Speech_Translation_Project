@@ -1,0 +1,7 @@
+                                                          {OUTPUT FORMAT}
+Time limit: 5
+Complete your message under 5 seconds..
+Processing your speech...
+Recognized text: ఇది పని చేస్తుంది
+Enter language code (e.g., 'te' for Telugu, 'ml' for Malayalam):  en
+Translated text: It will work
